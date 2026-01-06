@@ -6,7 +6,7 @@ function Login() {
     const [password, setPassword] = useState('');
     //const [error, setError] = useState('');
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         console.log('handleSubmit wywołane');
     }
@@ -30,6 +30,5 @@ function Login() {
         </div>)
 
 }
-
 
 export default Login;

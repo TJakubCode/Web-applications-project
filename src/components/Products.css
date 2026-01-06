@@ -1,0 +1,16 @@
+#top{
+    display: flex;
+    flex-direction: column;
+    width:100vw;
+}
+
+#inner{
+    display: flex;
+    flex-direction: row;
+    width:100vw;
+    
+}
+
+td{
+    border: solid 2px rgb(255, 255, 255);
+}
