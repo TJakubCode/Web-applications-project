@@ -5,15 +5,36 @@ import Login from "./components/Login.tsx";
 
 function App() {
     const [login, setLogin] = useState(false)
+    const [currentPage, setCurrentPage] = useState<string>('home')
+
+    const changePage = (page: string) => {
+        // if aby nie pokazywać stron do których użytkownik nie ma dostępu
+        setCurrentPage(page)
+    }
 
   return (
     <>
-        <div>
-          <button onClick={() => setLogin(!login)}>login</button>
-          {login && (
-              <Login/>
-          )}
-        </div>
+        <nav>
+            <button onClick={() => changePage('home')}>Strona główna</button>
+            <button onClick={() => changePage('products')}>
+                Produkty
+            </button>
+            <button>
+                Historia zamówień
+            </button>
+            <button onClick={() => setLogin(!login)}>login</button>
+            {login && (
+                <Login/>
+            )}
+        </nav>
+
+        {currentPage === 'home' && (
+            <h1>Witamy na stronie głównej</h1>
+        )}
+
+        {currentPage === 'products' && (
+            <h1>Produkty</h1>
+        )}
     </>
   )
 }
