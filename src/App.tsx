@@ -16,19 +16,23 @@ function App() {
   return (
     <>
         <nav>
-            <button onClick={() => changePage('home')}>Strona główna</button>
-            <button onClick={() => changePage('products')}>
+            <button className={currentPage === 'home' ? 'activated' : ''} onClick={() => changePage('home')}>Strona główna</button>
+            <button className={currentPage === 'products' ? 'activated' : ''} onClick={() => changePage('products')}>
                 Produkty
             </button>
             <button>
                 Historia zamówień
             </button>
             <button onClick={() => setLogin(!login)}>Login</button>
-            {login && (
-                <Login/>
-            )}
         </nav>
 
+        
+        {login && (
+            <div id="login-tab">
+                <Login/>
+            </div>
+        )}
+       
         {currentPage === 'home' && (
             <h1>Witamy na stronie głównej</h1>
         )}

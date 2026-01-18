@@ -9,8 +9,6 @@ const ProductList: React.FC = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                // Dzięki PROXY używamy teraz ścieżki względnej!
-                // Nie musimy pisać http://localhost:3000
                 const response = await fetch('/api/products');
 
                 if (!response.ok) {
@@ -35,11 +33,8 @@ const ProductList: React.FC = () => {
 
     return (
         <div style={styles.container}>
-            <h2 style={styles.header}>Nasze Produkty</h2>
-            
             <div style={styles.list}>
                 {products.map((product) => (
-                    // Tutaj używamy naszego nowego komponentu
                     <ProductItem key={product.id} product={product} />
                 ))}
             </div>
@@ -49,7 +44,7 @@ const ProductList: React.FC = () => {
 
 const styles: { [key: string]: React.CSSProperties } = {
     container: {
-        maxWidth: '600px',
+        maxWidth: '900px',
         margin: '0 auto',
         padding: '20px',
         fontFamily: 'Segoe UI, sans-serif'
@@ -61,7 +56,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     },
     list: {
         display: 'flex',
-        flexDirection: 'column' // Upewnienie się, że są jeden pod drugim
+        flexDirection: 'column'
     },
     center: {
         textAlign: 'center',

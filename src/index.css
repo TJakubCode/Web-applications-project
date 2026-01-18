@@ -13,6 +13,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root{
+  width:100%;
+  padding: 0px !important;
+  margin:0px;
+  text-align: center;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -23,10 +30,25 @@ a:hover {
 }
 
 body {
-  margin: 0;
+  margin: 0px;
+  padding: 0px;
   display: flex;
   min-width: 320px;
   min-height: 100vh;
+}
+
+nav{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: center;
+  width:100%;
+}
+
+nav>button{
+  flex-basis:100%;
+  border-radius: 0px;
+  min-height: 70px;
 }
 
 h1 {

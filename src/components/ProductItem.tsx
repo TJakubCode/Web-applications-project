@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Wspólny interfejs (możesz go też wynieść do osobnego pliku types.ts)
 export interface Product {
     id: number;
     title: string;
@@ -43,7 +42,6 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
     );
 };
 
-// Style dla pojedynczego elementu
 const styles: { [key: string]: React.CSSProperties } = {
     card: {
         border: '1px solid #e0e0e0',
@@ -66,7 +64,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     image: {
         width: '100%',
         height: '100%',
-        objectFit: 'contain', // Zdjęcie będzie widoczne w całości
+        objectFit: 'contain',
     },
     placeholder: {
         width: '100%',
