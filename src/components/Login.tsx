@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../index.css'
 
 interface LoginProps {
-    onLoginSuccess: (username: string) => void;
+    onLoginSuccess: (username: string, role: string) => void;
 }
 
 function Login({ onLoginSuccess }: LoginProps) {
@@ -37,7 +37,7 @@ function Login({ onLoginSuccess }: LoginProps) {
                 setPassword('');
             } else {
                 console.log('Zalogowano:', data.username);
-                onLoginSuccess(data.username);
+                onLoginSuccess(data.username, data.role);
             }
         } catch (error) {
             console.error(error);
