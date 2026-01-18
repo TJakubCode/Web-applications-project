@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import './components/Login.tsx'
 import Login from "./components/Login.tsx";
-import Products from "./components/Products.tsx"
+import ProductList from './components/ProductList.tsx';
 
 function App() {
     const [login, setLogin] = useState(false)
@@ -23,7 +23,7 @@ function App() {
             <button>
                 Historia zamówień
             </button>
-            <button onClick={() => setLogin(!login)}>login</button>
+            <button onClick={() => setLogin(!login)}>Login</button>
             {login && (
                 <Login/>
             )}
@@ -36,7 +36,7 @@ function App() {
         {currentPage === 'products' && (
             <>
                 <h1>Produkty</h1>
-                <Products/>
+                <ProductList/>
             </>
         )}
     </>
