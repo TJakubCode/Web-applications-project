@@ -1,51 +1,90 @@
 import { useState } from 'react'
 import './App.css'
-import './components/Login.tsx'
 import Login from "./components/Login.tsx";
 import ProductList from './components/ProductList.tsx';
 
 function App() {
-    const [login, setLogin] = useState(false)
+    const [loginModalOpen, setLoginModalOpen] = useState(false)
     const [currentPage, setCurrentPage] = useState<string>('home')
+    
+
+    const [currentUser, setCurrentUser] = useState<string | null>(null)
 
     const changePage = (page: string) => {
-        // if aby nie pokazywać stron do których użytkownik nie ma dostępu
         setCurrentPage(page)
     }
 
-  return (
-    <>
-        <nav>
-            <button className={currentPage === 'home' ? 'activated' : ''} onClick={() => changePage('home')}>Strona główna</button>
-            <button className={currentPage === 'products' ? 'activated' : ''} onClick={() => changePage('products')}>
-                Produkty
-            </button>
-            <button className={currentPage === 'history' ? 'activated' : ''} onClick={() => changePage('history')}>
-                Historia zamówień
-            </button>
-            <button className={currentPage === 'cart' ? 'activated' : ''} onClick={() => changePage('cart')}>Koszyk</button>
-            <button onClick={() => setLogin(!login)}>Login</button>
-        </nav>
 
-        
-        {login && (
-            <div id="login-tab">
-                <Login/>
-            </div>
-        )}
-       
-        {currentPage === 'home' && (
-            <h1>Witamy na stronie głównej</h1>
-        )}
+    const handleLoginSuccess = (username: string) => {
+        console.log('Logowanie udane w App:', username);
+        setCurrentUser(username);   
+    }
 
-        {currentPage === 'products' && (
-            <>
-                <h1>Produkty</h1>
-                <ProductList/>
-            </>
-        )}
-    </>
-  )
+
+    const handleLogout = () => {
+        setCurrentUser(null);
+        setCurrentPage('home');
+    }
+
+    return (
+        <>
+            <nav style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px' }}>
+                <button onClick={() => changePage('home')}>Strona główna</button>
+                <button onClick={() => changePage('products')}>Produkty</button>
+                <button>Historia zamówień</button>
+
+                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    
+                    {currentUser ? (
+
+                        <>
+                            <span style={{ fontWeight: 'bold', color: '#4caf50' }}>
+                                {currentUser}
+                            </span>
+                            <button 
+                                onClick={handleLogout}
+                                style={{ backgroundColor: '#d32f2f' }}
+                            >
+                                Wyloguj
+                            </button>
+                        </>
+                    ) : (
+                        <button onClick={() => setLoginModalOpen(!loginModalOpen)}>
+                            Zaloguj / Zarejestruj
+                        </button>
+                    )}
+                    
+                </div>
+            </nav>
+
+            {loginModalOpen && !currentUser && (
+                <div id="login-tab">
+                    <Login onLoginSuccess={handleLoginSuccess} />
+                    
+                    <button 
+                        onClick={() => setLoginModalOpen(false)}
+                        style={{ marginTop: '10px', background: 'transparent', border: 'none', color: '#aaa', cursor: 'pointer' }}
+                    >
+                        Anuluj
+                    </button>
+                </div>
+            )}
+
+            {currentPage === 'home' && (
+                <div style={{ textAlign: 'center', marginTop: '50px' }}>
+                    <h1>Witamy na stronie głównej</h1>
+                    {currentUser && <p>Witaj, {currentUser}.</p>}
+                </div>
+            )}
+
+            {currentPage === 'products' && (
+                <>
+                    <h1>Produkty</h1>
+                    <ProductList/>
+                </>
+            )}
+        </>
+    )
 }
 
 export default App

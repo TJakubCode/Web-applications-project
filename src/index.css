@@ -46,9 +46,17 @@ nav{
 }
 
 nav>button{
+  border-radius: 0px;
   flex-basis:100%;
   border-radius: 0px;
   min-height: 70px;
+}
+
+div>button{
+    border-radius: 0px;
+    flex-basis:100%;
+    border-radius: 0px;
+    min-height: 70px;
 }
 
 h1 {
