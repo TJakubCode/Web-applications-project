@@ -9,6 +9,7 @@ export interface Product {
     description: string | null;
     category: string | null;
     image: string | null;
+    stock:number
 }
 
 interface ProductItemProps {

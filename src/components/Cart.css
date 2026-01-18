@@ -1,0 +1,111 @@
+.cart-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    color: #fff;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.cart-empty {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1.2rem;
+    color: #888;
+    padding-bottom: 20px;
+}
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    background-color: #252525;
+    padding: 15px;
+    border-radius: 6px;
+    gap: 20px;
+}
+
+.cart-item-img-wrapper {
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.cart-item-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.cart-item-details {
+    flex: 1;
+}
+
+.cart-item-details h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: #fff;
+}
+.cart-item-details p {
+    margin: 2px 0;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.cart-item-actions {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.item-total {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #4caf50;
+    margin: 0;
+}
+
+.remove-btn {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background 0.2s;
+}
+.remove-btn:hover { background-color: #b71c1c; }
+
+.cart-summary {
+    margin-top: 30px;
+    text-align: right;
+    border-top: 2px solid #333;
+    padding-top: 20px;
+}
+
+.checkout-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.2s;
+}
+.checkout-btn:hover { background-color: #388e3c; }
