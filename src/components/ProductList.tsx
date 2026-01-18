@@ -34,7 +34,6 @@ const ProductList: React.FC<ProductListProps> = ({ onProductSelect }) => {
         fetchProducts();
     }, []);
 
-
     const filteredProducts = products.filter(product =>
         product.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
