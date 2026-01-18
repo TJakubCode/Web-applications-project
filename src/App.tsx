@@ -20,9 +20,10 @@ function App() {
             <button className={currentPage === 'products' ? 'activated' : ''} onClick={() => changePage('products')}>
                 Produkty
             </button>
-            <button>
+            <button className={currentPage === 'history' ? 'activated' : ''} onClick={() => changePage('history')}>
                 Historia zamówień
             </button>
+            <button className={currentPage === 'cart' ? 'activated' : ''} onClick={() => changePage('cart')}>Koszyk</button>
             <button onClick={() => setLogin(!login)}>Login</button>
         </nav>
 
