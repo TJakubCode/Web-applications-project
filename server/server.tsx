@@ -208,6 +208,7 @@ app.patch('/api/products/:id/:stock', async (req: Request, res: Response) => {
             `UPDATE products SET stock = stock + ? WHERE id = ?`,
             [stock, id]
         );
+
         if (result.changes === 0) return res.status(404).json({ error: "Nie znaleziono produktu" });
         res.json({ message: "Pomyślnie zaktualizowano" });
     } catch{
@@ -244,7 +245,7 @@ app.post('/api/cart', async (req: Request, res: Response) => {
 app.get('/api/cart/:username', async (req: Request, res: Response) => {
     try {
         const cart = await db.all(`
-            SELECT c.id, c.quantity, p.title, p.price, p.image 
+            SELECT c.id, c.product_id ,c.quantity, p.title, p.price, p.image 
             FROM cart c 
             JOIN products p ON c.product_id = p.id 
             WHERE c.username = ?`, 
