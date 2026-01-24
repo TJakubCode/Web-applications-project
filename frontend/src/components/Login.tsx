@@ -31,6 +31,8 @@ function Login({ onLoginSuccess }: LoginProps) {
                 return;
             }
 
+            localStorage.setItem('token', data.token);
+
             if (isRegistering) {
                 setMessage('Zarejestrowano pomyślnie.');
                 setIsRegistering(false);
