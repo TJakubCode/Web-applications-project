@@ -4,6 +4,7 @@ import './Cart.css';
 
 interface CartItem {
     id: number;
+    productId: number;
     quantity: number;
     title: string;
     price: number;
@@ -16,7 +17,7 @@ interface CartProps {
     onCheckoutSuccess?: () => void;
 }
 
-const Cart: React.FC<CartProps> = ({ currentUser }) => {
+const Cart = ({ currentUser } : CartProps) => {
     const [items, setItems] = useState<CartItem[]>([]);
     const [total, setTotal] = useState(0);
 
@@ -65,7 +66,7 @@ const Cart: React.FC<CartProps> = ({ currentUser }) => {
 
     const removeFromCart = async (item: CartItem) => {
         try {
-            await fetch(`/api/products/${item.id}/${item.quantity}`, {
+            await fetch(`/api/products/${item.productId}/${item.quantity}`, {
                 method: 'PATCH',
             });
             await fetch(`/api/cart/${item.id}`, { method: 'DELETE' });
@@ -81,7 +82,7 @@ const Cart: React.FC<CartProps> = ({ currentUser }) => {
         return (
             <div className="cart-container">
                 <h2>Twój Koszyk</h2>
-                <div className="cart-empty">Koszyk jest pusty.</div>
+                <div className="cart-empty">Koszyk jest pusty</div>
             </div>
         );
     }
@@ -93,7 +94,7 @@ const Cart: React.FC<CartProps> = ({ currentUser }) => {
                 {items.map(item => (
                     <div key={item.id} className="cart-item">
                         <div className="cart-item-img-wrapper">
-                            <img src={item.image} alt={item.title} className="cart-item-image" />
+                            <img src={item.image} className="cart-item-image" />
                         </div>
                         
                         <div className="cart-item-details">

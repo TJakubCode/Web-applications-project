@@ -1,0 +1,18 @@
+#list-container {
+    max-width: 70vw;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: left;
+}
+
+#products {
+    display: flex;
+    flex-direction: column;
+}
+
+#loading {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1.2rem;
+}

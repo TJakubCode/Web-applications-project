@@ -16,7 +16,7 @@ interface ProductItemProps {
     product: Product;
 }
 
-export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
+export const ProductItem = ({ product } : ProductItemProps) => {
     return (
         <div className="product-card">
             <div className="product-image-container">
@@ -36,8 +36,15 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
                 
                 {product.category && (
                     <>
-                        <span className="product-category">{product.category}</span>
-                        <span className="product-price">{product.price}$</span>
+                        <div>
+                            <span style={{fontSize:'22px'}}>Kategoria:</span>
+                            <span className="product-category">{product.category}</span>
+                        </div>
+                        <div>
+                            <span style={{fontSize:'22px'}}>Cena:</span>
+                            <span className="product-price">{product.price}$</span>
+                        </div>
+                        
                     </>
                     
                 )}

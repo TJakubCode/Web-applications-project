@@ -39,20 +39,18 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ currentUser }) => {
     };
 
     return (
-        <div style={{ maxWidth: '800px', margin: '20px auto', color: 'white' }}>
+        <div style={{ width: '80vw', margin: '20px auto', color: 'white', fontSize:'24px' }}>
             <h2>Historia zamówień</h2>
             
             {orders.length === 0 && <p>Brak zamówień.</p>}
 
-            <div style={{ display: 'flex', gap: '20px' }}>
+            <div style={{ display: 'flex', gap: '20px', textAlign:'left' }}>
                 <div style={{ flex: 1 }}>
                     {orders.map(order => (
                         <div key={order.id} 
                              style={{ 
                                  border: '1px solid #444', 
                                  padding: '15px', 
-                                 marginBottom: '10px', 
-                                 borderRadius: '8px',
                                  background: selectedOrderId === order.id ? '#333' : '#1a1a1a',
                                  cursor: 'pointer'
                              }}
@@ -70,10 +68,10 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ currentUser }) => {
                         <h3>Szczegóły zamówienia #{selectedOrderId}</h3>
                         {selectedOrderItems.map((item, idx) => (
                             <div key={idx} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
-                                <img src={item.image} alt={item.title} style={{ width: '50px', height: '50px', objectFit: 'contain', background: '#fff' }} />
+                                <img src={item.image} style={{ width: '100px', height: '100px', objectFit: 'contain'}} />
                                 <div>
-                                    <p style={{ margin: 0, fontSize: '0.9rem' }}>{item.title}</p>
-                                    <p style={{ margin: 0, color: '#aaa', fontSize: '0.8rem' }}>
+                                    <p style={{ margin: 0, fontSize: '24px' }}>{item.title}</p>
+                                    <p style={{ margin: 0, color: '#aaa', fontSize: '20px' }}>
                                         {item.quantity} x {item.price.toFixed(2)} $
                                     </p>
                                 </div>

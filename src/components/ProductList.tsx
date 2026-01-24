@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { type Product, ProductItem } from './ProductItem';
+import './ProductList.css'
 
 interface ProductListProps {
     onProductSelect?: (id: number) => void;
@@ -8,8 +9,6 @@ interface ProductListProps {
 const ProductList: React.FC<ProductListProps> = ({ onProductSelect }) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
@@ -20,12 +19,10 @@ const ProductList: React.FC<ProductListProps> = ({ onProductSelect }) => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-
                 const data = await response.json();
                 setProducts(data);
             } catch (err) {
                 console.error(err);
-                setError("Nie udało się pobrać listy produktów.");
             } finally {
                 setLoading(false);
             }
@@ -38,11 +35,10 @@ const ProductList: React.FC<ProductListProps> = ({ onProductSelect }) => {
         product.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (loading) return <div style={styles.center}>Ładowanie produktów...</div>;
-    if (error) return <div style={{ ...styles.center, color: 'red' }}>{error}</div>;
+    if (loading) return <div id="loading">Ładowanie produktów...</div>;
 
     return (
-        <div style={styles.container}>
+        <div id="list-container">
             <input 
                 type="text" 
                 placeholder="Szukaj produktu..." 
@@ -57,7 +53,7 @@ const ProductList: React.FC<ProductListProps> = ({ onProductSelect }) => {
                 }}
             />
 
-            <div style={styles.list}>
+            <div id="products">
                 {filteredProducts.length > 0 ? (
                     filteredProducts.map((product) => (
                         <div key={product.id} onClick={() => onProductSelect && onProductSelect(product.id)} style={{cursor: 'pointer'}}>
@@ -72,22 +68,5 @@ const ProductList: React.FC<ProductListProps> = ({ onProductSelect }) => {
     );
 };
 
-const styles: { [key: string]: React.CSSProperties } = {
-    container: {
-        maxWidth: '900px',
-        margin: '0 auto',
-        padding: '20px',
-        fontFamily: 'Segoe UI, sans-serif'
-    },
-    list: {
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    center: {
-        textAlign: 'center',
-        marginTop: '50px',
-        fontSize: '1.2rem'
-    }
-};
 
 export default ProductList;

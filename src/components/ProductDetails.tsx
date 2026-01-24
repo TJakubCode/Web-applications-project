@@ -129,8 +129,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, currentUser,
                 
                 <div className="details-info-section">
                     <h1 className="details-title">{product.title}</h1>
-                    <span className="details-category">{product.category}</span>
-                    <h2 className="details-price">{product.price} $</h2>
+                    <div>
+                        <span style={{fontSize:'22px'}}>Kategoria: </span>
+                        <span className="details-category">{product.category}</span>
+                    </div>
+                    
+                    <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
+                        <span style ={{fontSize:'22px'}}>Cena: </span>
+                        <h2 className="details-price">{product.price} $</h2>
+                    </div>
+                    
                     
                     <p className="details-stock">
                         Dostępne w magazynie: <strong>{product.stock} szt.</strong>

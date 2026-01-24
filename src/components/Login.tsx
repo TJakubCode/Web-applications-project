@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import '../index.css'
+import './Login.css'
 
 interface LoginProps {
     onLoginSuccess: (username: string, role: string) => void;
@@ -68,7 +69,7 @@ function Login({ onLoginSuccess }: LoginProps) {
                 </button>
             </form>
 
-            {message && <p style={{ marginTop: '10px', color: 'orange' }}>{message}</p>}
+            {message && <p style={{ color: 'orange' }}>{message}</p>}
 
             <p style={{ marginTop: '20px', fontSize: '0.9rem' }}>
                 {isRegistering ? 'Masz już konto?' : 'Nie masz konta?'}
@@ -77,7 +78,6 @@ function Login({ onLoginSuccess }: LoginProps) {
                         setIsRegistering(!isRegistering);
                         setMessage('');
                     }}
-                    style={{ marginLeft: '10px', background: 'transparent', border: '1px solid #ccc', cursor: 'pointer' }}
                 >
                     {isRegistering ? 'Przejdź do logowania' : 'Zarejestruj się'}
                 </button>
