@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Backend dla aplikacji Webshop",
+  "main": "server.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx server.ts",
+    "dev": "tsx watch server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.6.0",
+    "tsx": "^3.12.7",
+    "typescript": "^5.2.2"
+  }
+}
