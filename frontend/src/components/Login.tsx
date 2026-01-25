@@ -26,12 +26,12 @@ function Login({ onLoginSuccess }: LoginProps) {
 
         const data = await response.json();
 
-            if (!response.ok) {
-                setMessage(data.error || 'Błąd');
-                return;
-            }
+        if (!response.ok) {
+            setMessage(data.error || 'Błąd');
+            return;
+        }
 
-            localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.token);
 
         if (isRegistering) {
             setMessage('Zarejestrowano pomyślnie.');
