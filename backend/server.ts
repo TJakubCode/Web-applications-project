@@ -3,6 +3,11 @@ import express, { Request, Response } from 'express';
 import sqlite3 from 'sqlite3';
 import { open, Database } from 'sqlite';
 import bcrypt from 'bcrypt';
+import jwt, {SignOptions} from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import {authenticateJWT} from "./middleware/auth";
+
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
@@ -92,9 +97,9 @@ interface Product {
     stock:number
 }
 
-app.post('/api/checkout', async (req: Request, res: Response) => {
+app.post('/api/checkout', authenticateJWT, async (req: Request, res: Response) => {
     try {
-        const { username } = req.body;
+        const { username } = (req as any).user.username;
         
 
         const cart = await db.all('SELECT c.quantity, p.id as product_id, p.price FROM cart c JOIN products p ON c.product_id = p.id WHERE c.username = ?', [username]);
@@ -125,23 +130,26 @@ app.post('/api/checkout', async (req: Request, res: Response) => {
     }
 });
 
-app.get('/api/orders/:username', async (req: Request, res: Response) => {
+app.get('/api/orders/:username', authenticateJWT, async (req: Request, res: Response) => {
+    const { username } = (req as any).user.username;
     try {
-        const orders = await db.all('SELECT * FROM orders WHERE username = ? ORDER BY created_at DESC', [req.params.username]);
-        res.status(200).json(orders);
+        const orders = await db.all('SELECT * FROM orders WHERE username = ? ORDER BY created_at DESC', [username]);
+        res.json(orders);
     } catch {
         res.status(500).json({ error: "Błąd serwera" });
     }
 });
 
-app.get('/api/orders/details/:id', async (req: Request, res: Response) => {
+app.get('/api/orders/details/:id', authenticateJWT, async (req: Request, res: Response) => {
+    const id = (req as any).user.id;
     try {
         const items = await db.all(`
             SELECT oi.quantity, oi.price, p.title, p.image 
             FROM order_items oi 
             JOIN products p ON oi.product_id = p.id 
             WHERE oi.order_id = ?`, 
-            [req.params.id]
+            //[req.params.id]
+            [id]
         );
         res.status(200).json(items);
     } catch {
@@ -303,7 +311,23 @@ app.post('/api/login', async (req: Request, res: Response) => {
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (isMatch) {
-            res.json({ username: user.username, role: user.role });
+            const secret = process.env.JWT_SECRET;
+            const expiresIn = process.env.JWT_EXPIRES_IN || '1h';
+
+            if (!secret) {
+                throw new Error("JWT_SECRET is not defined in .env");
+            }
+
+            const payload = { username: user.username, role: user.role };
+            const options: SignOptions = { expiresIn: expiresIn as any  }; // type-safe
+
+            const token = jwt.sign(
+                payload,
+                secret as string,
+                options
+            );
+
+            res.json({ message: "Zalogowano pomyślnie", username: user.username, role: user.role, token: token });
         } else {
             res.status(401).json({ error: "Błędne hasło" });
         }

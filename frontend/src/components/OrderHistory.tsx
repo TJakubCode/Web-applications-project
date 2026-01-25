@@ -24,7 +24,10 @@ const OrderHistory = ({ currentUser } : OrderHistoryProps) => {
 
     useEffect(() => {
         const fetchOrders = async () => {
-            const res = await fetch(`/api/orders/${currentUser}`);
+            const res = await fetch(`/api/orders/${currentUser}`,
+                {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                });
             if (res.ok) setOrders(await res.json());
         };
         fetchOrders();
