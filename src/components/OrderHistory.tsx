@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Order {
     id: number;
@@ -17,7 +17,7 @@ interface OrderHistoryProps {
     currentUser: string;
 }
 
-const OrderHistory: React.FC<OrderHistoryProps> = ({ currentUser }) => {
+const OrderHistory = ({ currentUser } : OrderHistoryProps) => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [selectedOrderItems, setSelectedOrderItems] = useState<OrderItem[] | null>(null);
     const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
@@ -42,7 +42,7 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ currentUser }) => {
         <div style={{ width: '80vw', margin: '20px auto', color: 'white', fontSize:'24px' }}>
             <h2>Historia zamówień</h2>
             
-            {orders.length === 0 && <p>Brak zamówień.</p>}
+            {orders.length === 0 && <p>Brak zamówień</p>}
 
             <div style={{ display: 'flex', gap: '20px', textAlign:'left' }}>
                 <div style={{ flex: 1 }}>
@@ -64,11 +64,11 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ currentUser }) => {
                 </div>
 
                 {selectedOrderItems && (
-                    <div style={{ flex: 1, border: '1px solid #444', paddingLeft: '20px' }}>
+                    <div style={{ flex: 1, border: '1px solid #444', paddingLeft: '20px'}}>
                         <h3>Szczegóły zamówienia #{selectedOrderId}</h3>
                         {selectedOrderItems.map((item, idx) => (
-                            <div key={idx} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
-                                <img src={item.image} style={{ width: '100px', height: '100px', objectFit: 'contain'}} />
+                            <div key={idx} style={{ display: 'flex', gap: '10px', alignItems: 'center', borderStyle: 'solid', borderColor: 'gray',borderWidth: '2px 0px 2px 0px' }}>
+                                <img src={item.image} style={{width: '100px', objectFit: 'contain'}} />
                                 <div>
                                     <p style={{ margin: 0, fontSize: '24px' }}>{item.title}</p>
                                     <p style={{ margin: 0, color: '#aaa', fontSize: '20px' }}>

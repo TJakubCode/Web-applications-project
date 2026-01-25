@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { type Product, ProductItem } from './ProductItem';
+import { useEffect, useState } from 'react';
+import { type Product} from './ProductItem';
+import ProductItem from './ProductItem';
 import './ProductList.css'
 
 interface ProductListProps {
     onProductSelect?: (id: number) => void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ onProductSelect }) => {
+const ProductList= ({ onProductSelect } : ProductListProps) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,7 +18,7 @@ const ProductList: React.FC<ProductListProps> = ({ onProductSelect }) => {
                 const response = await fetch('/api/products');
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`${response.status}`);
                 }
                 const data = await response.json();
                 setProducts(data);
@@ -56,7 +57,7 @@ const ProductList: React.FC<ProductListProps> = ({ onProductSelect }) => {
             <div id="products">
                 {filteredProducts.length > 0 ? (
                     filteredProducts.map((product) => (
-                        <div key={product.id} onClick={() => onProductSelect && onProductSelect(product.id)} style={{cursor: 'pointer'}}>
+                        <div key={product.id} onClick={() => onProductSelect && onProductSelect(product.id)}>
                             <ProductItem product={product} />
                         </div>
                     ))

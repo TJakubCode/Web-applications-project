@@ -54,7 +54,7 @@ function App() {
                 <div style={{display: 'flex', alignItems: 'center', gap: '15px', width:'100%', justifyContent:'center' }}>
                     {currentUser ? (
                         <>
-                            <span style={{ fontWeight: 'bold', color: '#368a39', fontSize:'26px', width:'300px', margin:'0px 10px 0px 20px', paddingLeft:'40px', borderLeft:'solid gray 2px' }}>
+                            <span style={{ fontWeight: 'bold', color: '#368a39', fontSize:'26px', width:'300px', margin:'0px 10px 0px 20px', paddingLeft:'40px' }}>
                                 Zalogowano jako: {currentUser}
                             </span>
                             <button 
@@ -65,7 +65,7 @@ function App() {
                             </button>
                         </>
                     ) : (
-                        <button style={{width:'100%', marginLeft:'calc(100% - 600px)'}} onClick={() => setLoginModalOpen(!loginModalOpen)}>
+                        <button style={{width:'100%', marginLeft:'calc(100% - 400px)'}} onClick={() => setLoginModalOpen(!loginModalOpen)}>
                             -----&gt; Logowanie / Rejestracja &lt;-----
                         </button>
                     )}

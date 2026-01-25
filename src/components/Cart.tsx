@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/set-state-in-effect */
-import React, { useEffect, useState } from 'react';
+
+import { useEffect, useState } from 'react';
 import './Cart.css';
 
 interface CartItem {
@@ -14,10 +14,10 @@ interface CartItem {
 
 interface CartProps {
     currentUser: string;
-    onCheckoutSuccess?: () => void;
+    onCheckoutSuccess: () => void;
 }
 
-const Cart = ({ currentUser } : CartProps) => {
+const Cart = ({ currentUser, onCheckoutSuccess } : CartProps) => {
     const [items, setItems] = useState<CartItem[]>([]);
     const [total, setTotal] = useState(0);
 
@@ -38,6 +38,7 @@ const Cart = ({ currentUser } : CartProps) => {
                     alert('Zamówienie zostało złożone!');
                     setItems([]);
                     setTotal(0);
+                    onCheckoutSuccess();
                 } else {
                     alert('Błąd podczas składania zamówienia');
                 }
@@ -60,6 +61,7 @@ const Cart = ({ currentUser } : CartProps) => {
     };
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchCart();
     }, [currentUser]);
 
@@ -99,7 +101,7 @@ const Cart = ({ currentUser } : CartProps) => {
                         
                         <div className="cart-item-details">
                             <h3>{item.title}</h3>
-                            <p>Cena: {item.price} $</p>
+                            <p>Cena: <strong>{item.price} $</strong></p>
                             <p>Ilość: <strong>{item.quantity}</strong></p>
                         </div>
                         

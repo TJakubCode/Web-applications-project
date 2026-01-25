@@ -18,34 +18,28 @@ function Login({ onLoginSuccess }: LoginProps) {
 
         const endpoint = isRegistering ? '/api/register' : '/api/login';
 
-        try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (!response.ok) {
-                setMessage(data.error || 'Błąd');
-                return;
-            }
+        if (!response.ok) {
+            setMessage(data.error || 'Błąd');
+            return;
+        }
 
-            if (isRegistering) {
-                setMessage('Zarejestrowano pomyślnie.');
-                setIsRegistering(false);
-                setPassword('');
-            } else {
-                console.log('Zalogowano:', data.username);
-                onLoginSuccess(data.username, data.role);
-            }
-        } catch (error) {
-            console.error(error);
-            setMessage('Błąd połączenia z serwerem');
+        if (isRegistering) {
+            setMessage('Zarejestrowano pomyślnie.');
+            setIsRegistering(false);
+            setPassword('');
+        } else {
+            console.log('Zalogowano:', data.username);
+            onLoginSuccess(data.username, data.role);
         }
     }
-
     return (
         <div className="login-container">
             <h2>{isRegistering ? 'Rejestracja' : 'Logowanie'}</h2>
@@ -58,7 +52,7 @@ function Login({ onLoginSuccess }: LoginProps) {
                     required
                 />
                 <input
-                    type="text"
+                    type="password"
                     placeholder="Hasło"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -71,15 +65,14 @@ function Login({ onLoginSuccess }: LoginProps) {
 
             {message && <p style={{ color: 'orange' }}>{message}</p>}
 
-            <p style={{ marginTop: '20px', fontSize: '0.9rem' }}>
-                {isRegistering ? 'Masz już konto?' : 'Nie masz konta?'}
+            <p style={{ marginTop:'10px',fontSize: '0.9rem' }}>
                 <button 
                     onClick={() => {
                         setIsRegistering(!isRegistering);
                         setMessage('');
                     }}
                 >
-                    {isRegistering ? 'Przejdź do logowania' : 'Zarejestruj się'}
+                    {isRegistering ? 'Logowanie' : 'Rejestracja'}
                 </button>
             </p>
         </div>

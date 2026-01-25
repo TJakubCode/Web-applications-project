@@ -1,14 +1,12 @@
-import React from 'react';
 import './ProductItem.css';
-
 
 export interface Product {
     id: number;
     title: string;
     price: number;
-    description: string | null;
-    category: string | null;
-    image: string | null;
+    description: string;
+    category: string;
+    image: string;
     stock:number
 }
 
@@ -16,19 +14,15 @@ interface ProductItemProps {
     product: Product;
 }
 
-export const ProductItem = ({ product } : ProductItemProps) => {
+const ProductItem = ({ product } : ProductItemProps) => {
     return (
         <div className="product-card">
             <div className="product-image-container">
-                {product.image ? (
                     <img 
                         src={product.image} 
                         alt={product.title} 
                         className="product-image" 
                     />
-                ) : (
-                    <div className="product-placeholder">Brak zdjęcia</div>
-                )}
             </div>
 
             <div className="product-content">
@@ -36,7 +30,7 @@ export const ProductItem = ({ product } : ProductItemProps) => {
                 
                 {product.category && (
                     <>
-                        <div>
+                        <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
                             <span style={{fontSize:'22px'}}>Kategoria:</span>
                             <span className="product-category">{product.category}</span>
                         </div>
@@ -56,3 +50,5 @@ export const ProductItem = ({ product } : ProductItemProps) => {
         </div>
     );
 };
+
+export default ProductItem

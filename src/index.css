@@ -1,5 +1,5 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Google Sans Code";
   line-height: 1.5;
   font-weight: 400;
 
@@ -13,11 +13,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1{
+  text-align: center;
+}
 #root{
   width:100%;
   padding: 0px !important;
   margin:0px;
-  text-align: center;
+  text-align: left;
 }
 
 a {
@@ -75,7 +78,8 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #202020;
+  border-color: #ffffff;
   cursor: pointer;
   transition: border-color 0.25s;
 }
