@@ -30,7 +30,8 @@ const Cart = ({ currentUser, onCheckoutSuccess } : CartProps) => {
             try {
                 const res = await fetch('/api/checkout', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json' ,
+                        Authorization: `Bearer ${localStorage.getItem('token')}`},
                     body: JSON.stringify({ username: currentUser })
                 });
 
@@ -49,7 +50,11 @@ const Cart = ({ currentUser, onCheckoutSuccess } : CartProps) => {
 
     const fetchCart = async () => {
         try {
-            const res = await fetch(`/api/cart/${currentUser}`);
+            const res = await fetch(`/api/cart/${currentUser}`,
+                {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                }
+                );
             if (res.ok) {
                 const data = await res.json();
                 setItems(data);
@@ -70,8 +75,11 @@ const Cart = ({ currentUser, onCheckoutSuccess } : CartProps) => {
         try {
             await fetch(`/api/products/${item.productId}/${item.quantity}`, {
                 method: 'PATCH',
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
-            await fetch(`/api/cart/${item.id}`, { method: 'DELETE' });
+            await fetch(`/api/cart/${item.id}`, { method: 'DELETE',
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
             
             fetchCart(); 
         } catch (e) {

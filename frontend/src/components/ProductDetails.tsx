@@ -35,7 +35,10 @@ const ProductDetails = ({ productId, currentUser, isAdmin, onBack } : ProductDet
                 const prodData = await prodRes.json();
                 setProduct(prodData);
 
-                const revRes = await fetch(`/api/reviews/${productId}`);
+                const revRes = await fetch(`/api/reviews/${productId}`,
+                    {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                    });
                 const revData = await revRes.json();
                 setReviews(revData);
             } catch (err) {
@@ -51,12 +54,17 @@ const ProductDetails = ({ productId, currentUser, isAdmin, onBack } : ProductDet
         try {
             const res = await fetch(`/api/reviews/${reviewId}`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify({ username: currentUser })
             });
 
             if (res.ok) {
-                const revRes = await fetch(`/api/reviews/${productId}`);
+                const revRes = await fetch(`/api/reviews/${productId}`,
+                    {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                    } );
                 setReviews(await revRes.json());
             } else {
                 alert("Nie masz uprawnień do usunięcia tej opinii.");
@@ -71,7 +79,8 @@ const ProductDetails = ({ productId, currentUser, isAdmin, onBack } : ProductDet
         try {
             const res = await fetch('/api/cart', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`},
                 body: JSON.stringify({
                     username: currentUser,
                     product_id: product.id,
@@ -98,7 +107,9 @@ const ProductDetails = ({ productId, currentUser, isAdmin, onBack } : ProductDet
         try {
             const res = await fetch('/api/reviews', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify({
                     username: currentUser,
                     product_id: productId,
@@ -108,7 +119,12 @@ const ProductDetails = ({ productId, currentUser, isAdmin, onBack } : ProductDet
 
             if (res.ok) {
                 setNewReview('');
-                const revRes = await fetch(`/api/reviews/${productId}`);
+                const revRes = await fetch(`/api/reviews/${productId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('token')}`
+                        },
+                    });
                 setReviews(await revRes.json());
             }
         } catch (e) {

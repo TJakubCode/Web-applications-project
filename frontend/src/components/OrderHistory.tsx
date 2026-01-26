@@ -34,7 +34,10 @@ const OrderHistory = ({ currentUser } : OrderHistoryProps) => {
     }, [currentUser]);
 
     const showDetails = async (orderId: number) => {
-        const res = await fetch(`/api/orders/details/${orderId}`);
+        const res = await fetch(`/api/orders/details/${orderId}`,
+            {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            });
         if (res.ok) {
             setSelectedOrderItems(await res.json());
             setSelectedOrderId(orderId);

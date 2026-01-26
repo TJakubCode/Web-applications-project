@@ -204,7 +204,7 @@ app.patch('/api/products/:id', async (req: Request, res: Response) => {
     }
 });
 
-app.patch('/api/products/:id/:stock', async (req: Request, res: Response) => {
+app.patch('/api/products/:id/:stock', authenticateJWT, async (req: Request, res: Response) => {
     try {
         const { id, stock } = req.params;
         const result = await db.run(
@@ -219,7 +219,7 @@ app.patch('/api/products/:id/:stock', async (req: Request, res: Response) => {
     }
 });
 
-app.post('/api/cart', async (req: Request, res: Response) => {
+app.post('/api/cart', authenticateJWT, async (req: Request, res: Response) => {
     try {
         const { username, product_id, quantity } = req.body;
         
@@ -245,7 +245,7 @@ app.post('/api/cart', async (req: Request, res: Response) => {
     }
 });
 
-app.get('/api/cart/:username', async (req: Request, res: Response) => {
+app.get('/api/cart/:username', authenticateJWT, async (req: Request, res: Response) => {
     try {
         const cart = await db.all(`
             SELECT c.id, c.product_id as productId,c.quantity, p.title, p.price, p.image 
@@ -260,7 +260,7 @@ app.get('/api/cart/:username', async (req: Request, res: Response) => {
     }
 });
 
-app.delete('/api/cart/:id', async (req: Request, res: Response) => {
+app.delete('/api/cart/:id', authenticateJWT,async (req: Request, res: Response) => {
     try {
         await db.run('DELETE FROM cart WHERE id = ?', [req.params.id]);
         res.json({ message: "Usunięto z koszyka" });
@@ -278,7 +278,7 @@ app.get('/api/reviews/:productId', async (req: Request, res: Response) => {
     }
 });
 
-app.post('/api/reviews', async (req: Request, res: Response) => {
+app.post('/api/reviews', authenticateJWT, async (req: Request, res: Response) => {
     try {
         const { username, product_id, content } = req.body;
         await db.run('INSERT INTO reviews (username, product_id, content) VALUES (?, ?, ?)', [username, product_id, content]);
@@ -336,7 +336,7 @@ app.post('/api/login', async (req: Request, res: Response) => {
     }
 });
 
-app.delete('/api/reviews/:id', async (req: Request, res: Response) => {
+app.delete('/api/reviews/:id', authenticateJWT, async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { username } = req.body;
