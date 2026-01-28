@@ -3,7 +3,7 @@ import './App.css'
 import Login from "./components/Login.tsx";
 import ProductList from './components/ProductList.tsx';
 import ProductDetails from './components/ProductDetails.tsx';
-import Cart from './components/Cart.tsx'; // IMPORT NOWEGO KOMPONENTU
+import Cart from './components/Cart.tsx';
 import OrderHistory from './components/OrderHistory.tsx';
 
 function App() {
@@ -41,53 +41,43 @@ function App() {
 
     return (
         <>
-            <nav style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px' }}>
-                <button onClick={() => changePage('products')}>Produkty</button>
-                
-                {/* Przycisk Koszyk widoczny dla zalogowanych */}
+            <nav>
                 {currentUser && (
                     <>
+                        <button onClick={() => changePage('products')}>Produkty</button>
                         <button onClick={() => changePage('cart')}>Koszyk</button>
                         <button onClick={() => changePage('orders')}>Historia zamówień</button>
                     </>
                     
                 )}
 
-                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <div style={{display: 'flex', alignItems: 'center', gap: '15px', width:'100%', justifyContent:'center' }}>
                     {currentUser ? (
                         <>
-                            <span style={{ fontWeight: 'bold', color: '#4caf50' }}>
-                                Witaj, {currentUser}!
+                            <span style={{ fontWeight: 'bold', color: '#368a39', fontSize:'26px', width:'300px', margin:'0px 10px 0px 20px', paddingLeft:'40px' }}>
+                                Zalogowano jako: {currentUser}
                             </span>
                             <button 
                                 onClick={handleLogout}
-                                style={{ backgroundColor: '#d32f2f' }}
+                                style={{ backgroundColor: '#a31313' }}
                             >
                                 Wyloguj
                             </button>
                         </>
                     ) : (
-                        <button onClick={() => setLoginModalOpen(!loginModalOpen)}>
-                            Zaloguj / Zarejestruj
+                        <button style={{width:'100%', marginLeft:'calc(100% - 400px)'}} onClick={() => setLoginModalOpen(!loginModalOpen)}>
+                            -----&gt; Logowanie / Rejestracja &lt;-----
                         </button>
                     )}
                 </div>
             </nav>
 
-            {/* Modal logowania */}
             {loginModalOpen && !currentUser && (
                 <div id="login-tab">
                     <Login onLoginSuccess={handleLoginSuccess} />
-                    <button 
-                        onClick={() => setLoginModalOpen(false)}
-                        style={{ marginTop: '10px', background: 'transparent', border: 'none', color: '#aaa', cursor: 'pointer' }}
-                    >
-                        Anuluj
-                    </button>
                 </div>
             )}
 
-            {/* LISTA PRODUKTÓW */}
             {currentPage === 'products' && (
                 <>
                     <h1>Produkty</h1>
@@ -95,12 +85,11 @@ function App() {
                 </>
             )}
 
-            {/* SZCZEGÓŁY PRODUKTU */}
             {currentPage === 'details' && selectedProductId && (
                 <ProductDetails 
                     productId={selectedProductId}
                     currentUser={currentUser}
-                    isAdmin={isAdmin} // Przekazujemy prop
+                    isAdmin={isAdmin}
                     onBack={() => changePage('products')}
                 />
             )}
@@ -112,7 +101,6 @@ function App() {
                 />
             )}
 
-            {/* NOWA STRONA HISTORII */}
             {currentPage === 'orders' && currentUser && (
                 <OrderHistory currentUser={currentUser} />
             )}

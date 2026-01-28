@@ -6,9 +6,9 @@
 }
 
 #login-tab{
+  position: absolute;
   width:250px;
   margin-left:calc(100% - 250px);
-  padding-top: 10px;
   background-color: #1a1a1a;
 }
 

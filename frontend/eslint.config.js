@@ -8,6 +8,7 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 export default defineConfig([
   globalIgnores(['dist']),
   {
+    tsconfigRootDir: "/home/bravo/Web-applications-project/frontend",
     files: ['**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,

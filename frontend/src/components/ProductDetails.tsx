@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type Product } from './ProductItem';
 import './ProductDetails.css';
 
@@ -20,7 +20,7 @@ interface ProductWithStock extends Product {
     stock: number;
 }
 
-const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, currentUser, isAdmin, onBack }) => {
+const ProductDetails = ({ productId, currentUser, isAdmin, onBack } : ProductDetailsProps) => {
     const [product, setProduct] = useState<ProductWithStock | null>(null);
     const [reviews, setReviews] = useState<Review[]>([]);
     const [quantity, setQuantity] = useState(1);
@@ -35,7 +35,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, currentUser,
                 const prodData = await prodRes.json();
                 setProduct(prodData);
 
-                const revRes = await fetch(`/api/reviews/${productId}`);
+                const revRes = await fetch(`/api/reviews/${productId}`,
+                    {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                    });
                 const revData = await revRes.json();
                 setReviews(revData);
             } catch (err) {
@@ -51,12 +54,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, currentUser,
         try {
             const res = await fetch(`/api/reviews/${reviewId}`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify({ username: currentUser })
             });
 
             if (res.ok) {
-                const revRes = await fetch(`/api/reviews/${productId}`);
+                const revRes = await fetch(`/api/reviews/${productId}`,
+                    {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                    } );
                 setReviews(await revRes.json());
             } else {
                 alert("Nie masz uprawnień do usunięcia tej opinii.");
@@ -71,7 +79,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, currentUser,
         try {
             const res = await fetch('/api/cart', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`},
                 body: JSON.stringify({
                     username: currentUser,
                     product_id: product.id,
@@ -98,7 +107,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, currentUser,
         try {
             const res = await fetch('/api/reviews', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify({
                     username: currentUser,
                     product_id: productId,
@@ -108,7 +119,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, currentUser,
 
             if (res.ok) {
                 setNewReview('');
-                const revRes = await fetch(`/api/reviews/${productId}`);
+                const revRes = await fetch(`/api/reviews/${productId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('token')}`
+                        },
+                    });
                 setReviews(await revRes.json());
             }
         } catch (e) {
@@ -123,17 +139,23 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, currentUser,
             <button onClick={onBack} className="back-btn">← Wróć do listy</button>
 
             <div className="details-card">
-                <div className="details-image-section">
-                    <img src={product.image || ''} alt={product.title} className="details-image" />
-                </div>
+                <img src={product.image || ''} alt={product.title} className="details-image" />
                 
                 <div className="details-info-section">
                     <h1 className="details-title">{product.title}</h1>
-                    <span className="details-category">{product.category}</span>
-                    <h2 className="details-price">{product.price} $</h2>
+                    <div >
+                        <span style={{fontSize:'22px'}}>Kategoria: </span>
+                        <span className="details-category">{product.category}</span>
+                    </div>
+                    
+                    <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
+                        <span style ={{fontSize:'22px'}}>Cena: </span>
+                        <h2 className="details-price">{product.price} $</h2>
+                    </div>
+                    
                     
                     <p className="details-stock">
-                        Dostępne w magazynie: <strong>{product.stock} szt.</strong>
+                        Stan magazynowy: {product.stock} szt.
                     </p>
                     
                     <p className="details-description">{product.description}</p>
@@ -180,9 +202,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, currentUser,
                             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <div>
                                     <strong>{rev.username}</strong> 
-                                    <small>{new Date(rev.created_at).toLocaleDateString()}</small>
+                                    <p style={{fontSize:'11px'}}>{new Date(rev.created_at).toLocaleDateString()}</p>
                                 </div>
-                                
                                 {(isAdmin || currentUser === rev.username) && (
                                     <button 
                                         onClick={() => handleDeleteReview(rev.id)}
@@ -191,7 +212,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productId, currentUser,
                                             color: 'white', 
                                             border: 'none', 
                                             cursor: 'pointer',
-                                            fontSize: '0.8rem',
+                                            fontSize: '14px',
                                             borderRadius: '4px',
                                             flexBasis: '20%',
                                         }}
