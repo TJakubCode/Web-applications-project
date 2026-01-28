@@ -17,11 +17,13 @@ JWT_SECRET=[YOUR KEY] JWT_EXPIRES_IN=1h
 To run the server:
 ```shell
 cd backend
+npm install
 npx tsx server.ts
 ```
 
 ## Website
 ```shell
 cd frontend
+npm install
 npm run dev
 ```
