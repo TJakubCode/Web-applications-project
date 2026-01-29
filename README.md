@@ -27,3 +27,7 @@ cd frontend
 npm install
 npm run dev
 ```
+
+# Authors
+- Tomasz Stanek
+- Jakub Turek
