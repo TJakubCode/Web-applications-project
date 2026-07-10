@@ -18,7 +18,7 @@
     "jsonwebtoken": "^9.0.3",
     "node-fetch": "^3.3.2",
     "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^6.0.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -27,5 +27,11 @@
     "@types/node": "^20.6.0",
     "tsx": "^3.12.7",
     "typescript": "^5.2.2"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true,
+    "esbuild@0.18.20": true,
+    "sqlite@5.1.1": true,
+    "sqlite3@6.0.1": true
   }
 }

@@ -5,7 +5,7 @@ import { open, Database } from "sqlite";
 import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
 import dotenv from "dotenv";
-import { authenticateJWT } from "./middleware/auth";
+import { authenticateJWT } from "./middleware/auth.js";
 
 dotenv.config();
 
