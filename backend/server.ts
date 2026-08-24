@@ -138,12 +138,10 @@ app.post(
 
       await db.run("DELETE FROM cart WHERE username = ?", [username]);
 
-      res
-        .status(200)
-        .json({ message: "Operacja zakończona pomyślnie", orderId });
+      res.status(200).json({ message: "Success", orderId });
     } catch (e) {
       console.error(e);
-      res.status(500).json({ error: "Błąd serwera" });
+      res.status(500).json({ error: "Server error" });
     }
   },
 );
@@ -160,7 +158,7 @@ app.get(
       );
       res.json(orders);
     } catch {
-      res.status(500).json({ error: "Błąd serwera" });
+      res.status(500).json({ error: "Server error" });
     }
   },
 );
@@ -182,7 +180,7 @@ app.get(
       );
       res.status(200).json(items);
     } catch {
-      res.status(500).json({ error: "Błąd serwera" });
+      res.status(500).json({ error: "Server error" });
     }
   },
 );
@@ -192,7 +190,7 @@ app.get("/api/products", async (req: Request, res: Response) => {
     const products = await db.all<Product[]>("SELECT * FROM products");
     res.status(200).json(products);
   } catch {
-    res.status(500).json({ error: "Błąd serwera" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -205,7 +203,7 @@ app.post("/api/products", async (req: Request, res: Response) => {
     );
     res.status(201).json({ id: result.lastID });
   } catch {
-    res.status(500).json({ error: "Błąd serwera" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -214,11 +212,10 @@ app.get("/api/products/:id", async (req: Request, res: Response) => {
     const product = await db.get("SELECT * FROM products WHERE id = ?", [
       req.params.id,
     ]);
-    if (!product)
-      return res.status(404).json({ error: "Nie znaleziono produktu" });
+    if (!product) return res.status(404).json({ error: "Product not found" });
     res.status(200).json(product);
   } catch {
-    res.status(500).json({ error: "Błąd serwera" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -231,10 +228,10 @@ app.patch("/api/products/:id", async (req: Request, res: Response) => {
       [title, price, description, category, image, stock, id],
     );
     if (result.changes === 0)
-      return res.status(404).json({ error: "Nie znaleziono produktu" });
-    res.status(200).json({ message: "Pomyślnie zaktualizowano" });
+      return res.status(404).json({ error: "Product not found" });
+    res.status(200).json({ message: "Updated successfully" });
   } catch {
-    res.status(500).json({ error: "Błąd serwera" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -250,10 +247,10 @@ app.patch(
       );
 
       if (result.changes === 0)
-        return res.status(404).json({ error: "Nie znaleziono produktu" });
-      res.json({ message: "Pomyślnie zaktualizowano" });
+        return res.status(404).json({ error: "Product not found" });
+      res.json({ message: "Updated successfully" });
     } catch {
-      res.status(500).json({ error: "Błąd serwera" });
+      res.status(500).json({ error: "Server error" });
     }
   },
 );
@@ -266,7 +263,7 @@ app.post("/api/cart", authenticateJWT, async (req: Request, res: Response) => {
       product_id,
     ]);
     if (!product || product.stock < quantity) {
-      return res.status(400).json({ error: "Produktu nie ma w magazynie" });
+      return res.status(400).json({ error: "Product out of stock" });
     }
 
     const existing = await db.get(
@@ -291,10 +288,10 @@ app.post("/api/cart", authenticateJWT, async (req: Request, res: Response) => {
       product_id,
     ]);
 
-    res.status(200).json({ message: "Dodano do koszyka" });
+    res.status(200).json({ message: "Added to cart" });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: "Błąd serwera" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -313,7 +310,7 @@ app.get(
       );
       res.json(cart);
     } catch {
-      res.status(500).json({ error: "Błąd serwera" });
+      res.status(500).json({ error: "Server error" });
     }
   },
 );
@@ -326,7 +323,7 @@ app.delete(
       await db.run("DELETE FROM cart WHERE id = ?", [req.params.id]);
       res.json({ message: "Usunięto z koszyka" });
     } catch {
-      res.status(500).json({ error: "Błąd serwera" });
+      res.status(500).json({ error: "Server error" });
     }
   },
 );
@@ -339,7 +336,7 @@ app.get("/api/reviews/:productId", async (req: Request, res: Response) => {
     );
     res.json(reviews);
   } catch {
-    res.status(500).json({ error: "Błąd serwera" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -355,7 +352,7 @@ app.post(
       );
       res.json({ message: "Dodano opinię" });
     } catch {
-      res.status(500).json({ error: "Błąd serwera" });
+      res.status(500).json({ error: "Server error" });
     }
   },
 );
@@ -369,11 +366,11 @@ app.post("/api/register", async (req: Request, res: Response) => {
       "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
       [username, hashedPassword, "user"],
     );
-    res.status(201).json({ message: "Zarejestrowano użytkownika" });
+    res.status(201).json({ message: "User registerd" });
   } catch (err: any) {
     if (err.code === "SQLITE_CONSTRAINT")
-      return res.status(409).json({ error: "Nazwa użytkownika jest zajęta" });
-    res.status(500).json({ error: "Błąd serwera" });
+      return res.status(409).json({ error: "This username is taken" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -384,8 +381,7 @@ app.post("/api/login", async (req: Request, res: Response) => {
       username,
     ]);
 
-    if (!user)
-      return res.status(401).json({ error: "Nieprawidłowa tożsamość" });
+    if (!user) return res.status(401).json({ error: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
 
@@ -409,10 +405,10 @@ app.post("/api/login", async (req: Request, res: Response) => {
         token: token,
       });
     } else {
-      res.status(401).json({ error: "Błędne hasło" });
+      res.status(401).json({ error: "Invalid password" });
     }
   } catch {
-    res.status(500).json({ error: "Błąd serwera" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -427,22 +423,20 @@ app.delete(
       const user = await db.get("SELECT role FROM users WHERE username = ?", [
         username,
       ]);
-      if (!user)
-        return res.status(401).json({ error: "Nie znaleziono użytkownika" });
+      if (!user) return res.status(401).json({ error: "User not found" });
 
       const review = await db.get("SELECT * FROM reviews WHERE id = ?", [id]);
-      if (!review)
-        return res.status(404).json({ error: "Nie znaleziono opinii" });
+      if (!review) return res.status(404).json({ error: "Review not found" });
 
       if (user.role === "admin" || review.username === username) {
         await db.run("DELETE FROM reviews WHERE id = ?", [id]);
         return res.json({ message: "Usunięto opinię" });
       } else {
-        return res.status(403).json({ error: "Odmowa dostępu" });
+        return res.status(403).json({ error: "Access denied" });
       }
     } catch (e) {
       console.error(e);
-      res.status(500).json({ error: "Błąd serwera" });
+      res.status(500).json({ error: "Server error" });
     }
   },
 );
@@ -469,7 +463,7 @@ app.get("/sync", async (req, res) => {
     res.send({ message: `Zsynchronizowano ${products.length} produktów` });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Błąd serwera");
+    res.status(500).send("Server error");
   }
 });
 

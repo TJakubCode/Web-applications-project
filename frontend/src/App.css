@@ -5,19 +5,20 @@
   transition: filter 300ms;
 }
 
-#login-tab{
-  position: absolute;
-  width:250px;
-  margin-left:calc(100% - 250px);
-  background-color: #1a1a1a;
+#login-tab {
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
 }
 
-form>*{
+form > * {
   margin-bottom: 5px;
 }
 
-.activated{
-  background-color: #3b3b3b
+.activated {
+  background-color: #3b3b3b;
 }
 
 .logo:hover {
@@ -27,7 +28,7 @@ form>*{
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-h2{
+h2 {
   margin: 0px;
 }
 
@@ -43,4 +44,72 @@ h2{
 
 .read-the-docs {
   color: #888;
+}
+
+#dropdown {
+  width: 100%;
+  position: absolute;
+  z-index: 10;
+  border: 2px solid #d3d3d3;
+  border-radius: 10px;
+  background-color: white;
+  top: 40px;
+  transition: all 0.1s ease-out;
+}
+
+.dropped {
+  height: 320px;
+}
+
+.standard {
+  height: 0px;
+}
+
+#login-btn {
+  border-radius: 999px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: 3px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: white;
+  border-color: lightgray;
+  cursor: pointer;
+  transition: background-color 0.1s ease-in-out;
+}
+
+#options {
+  display: flex;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 10px;
+  padding-right: 30px;
+  flex-grow: 1;
+}
+
+.icon {
+  margin-left: 15px;
+}
+
+@media (max-width: 900px) {
+  .icon {
+    margin-left: 0px;
+  }
+
+  #login-btn {
+    font-size: 11px;
+  }
+
+  #dropdown {
+    top: 20px;
+  }
+
+  .dropped {
+    height: 270px;
+  }
 }

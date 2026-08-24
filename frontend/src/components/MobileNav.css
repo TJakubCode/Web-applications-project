@@ -1,0 +1,41 @@
+#mobile-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mobile-options button {
+  flex-direction: column;
+  font-size: 12px;
+  width: 100%;
+  border-radius: 0px;
+  border: none;
+  border-top: 2px solid lightgray;
+}
+
+#menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 0;
+  overflow: hidden;
+  background-color: white;
+  border-radius: 20px;
+  border: 2px solid #c7c7c7;
+  transition: all 0.1s linear;
+}
+
+.menu-collapsed {
+  width: 51px;
+  height: 51px;
+}
+
+.menu-expanded {
+  width: 150px;
+  height: 320px;
+}
+
+#menu-btn {
+  padding: 7px;
+}

@@ -1,233 +1,266 @@
-import { useEffect, useState } from 'react';
-import { type Product } from './ProductItem';
-import './ProductDetails.css';
+import { useEffect, useState } from "react";
+import { type Product } from "./ProductItem";
+import "./ProductDetails.css";
 
 interface Review {
-    id: number;
-    username: string;
-    content: string;
-    created_at: string;
+  id: number;
+  username: string;
+  content: string;
+  created_at: string;
 }
 
 interface ProductDetailsProps {
-    productId: number;
-    currentUser: string | null;
-    isAdmin: boolean;
-    onBack: () => void;
+  productId: number;
+  currentUser: string | null;
+  isAdmin: boolean;
+  onBack: () => void;
 }
 
 interface ProductWithStock extends Product {
-    stock: number;
+  stock: number;
 }
 
-const ProductDetails = ({ productId, currentUser, isAdmin, onBack } : ProductDetailsProps) => {
-    const [product, setProduct] = useState<ProductWithStock | null>(null);
-    const [reviews, setReviews] = useState<Review[]>([]);
-    const [quantity, setQuantity] = useState(1);
-    const [newReview, setNewReview] = useState('');
-    const [message, setMessage] = useState('');
+const ProductDetails = ({
+  productId,
+  currentUser,
+  isAdmin,
+  onBack,
+}: ProductDetailsProps) => {
+  const [product, setProduct] = useState<ProductWithStock | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [quantity, setQuantity] = useState(1);
+  const [newReview, setNewReview] = useState("");
+  const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const prodRes = await fetch(`/api/products/${productId}`);
+        const prodData = await prodRes.json();
+        setProduct(prodData);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const prodRes = await fetch(`/api/products/${productId}`);
-                const prodData = await prodRes.json();
-                setProduct(prodData);
-
-                const revRes = await fetch(`/api/reviews/${productId}`,
-                    {
-                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-                    });
-                const revData = await revRes.json();
-                setReviews(revData);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-        fetchData();
-    }, [productId]);
-
-    const handleDeleteReview = async (reviewId: number) => {
-        if (!confirm("Czy na pewno chcesz usunąć tę opinię?")) return;
-
-        try {
-            const res = await fetch(`/api/reviews/${reviewId}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({ username: currentUser })
-            });
-
-            if (res.ok) {
-                const revRes = await fetch(`/api/reviews/${productId}`,
-                    {
-                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-                    } );
-                setReviews(await revRes.json());
-            } else {
-                alert("Nie masz uprawnień do usunięcia tej opinii.");
-            }
-            } catch (e) {
-                console.error(e);
-        }
+        const revRes = await fetch(`/api/reviews/${productId}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+        const revData = await revRes.json();
+        setReviews(revData);
+      } catch (err) {
+        console.error(err);
+      }
     };
-    const addToCart = async () => {
-        if (!currentUser || !product) return;
+    fetchData();
+  }, [productId]);
 
-        try {
-            const res = await fetch('/api/cart', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`},
-                body: JSON.stringify({
-                    username: currentUser,
-                    product_id: product.id,
-                    quantity: quantity
-                })
-            });
+  const handleDeleteReview = async (reviewId: number) => {
+    if (!confirm("Do you really want to remove this review?")) return;
 
-            if (res.ok) {
-                setMessage('Dodano do koszyka!');
-                setProduct({ ...product, stock: product.stock - quantity });
-                setQuantity(1);
-            } else {
-                const err = await res.json();
-                setMessage(`Błąd: ${err.error}`);
-            }
-        } catch {
-            setMessage('Błąd serwera');
-        }
-    };
+    try {
+      const res = await fetch(`/api/reviews/${reviewId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ username: currentUser }),
+      });
 
-    const addReview = async () => {
-        if (!currentUser || !newReview.trim()) return;
+      if (res.ok) {
+        const revRes = await fetch(`/api/reviews/${productId}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+        setReviews(await revRes.json());
+      } else {
+        alert("You don't have permissions to remove this review");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const addToCart = async () => {
+    if (!currentUser || !product) return;
 
-        try {
-            const res = await fetch('/api/reviews', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    username: currentUser,
-                    product_id: productId,
-                    content: newReview
-                })
-            });
+    try {
+      const res = await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          username: currentUser,
+          product_id: product.id,
+          quantity: quantity,
+        }),
+      });
 
-            if (res.ok) {
-                setNewReview('');
-                const revRes = await fetch(`/api/reviews/${productId}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem('token')}`
-                        },
-                    });
-                setReviews(await revRes.json());
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    };
+      if (res.ok) {
+        setMessage("Added to cart!");
+        setProduct({ ...product, stock: product.stock - quantity });
+        setQuantity(1);
+      } else {
+        const err = await res.json();
+        setMessage(`Błąd: ${err.error}`);
+      }
+    } catch {
+      setMessage("Server error");
+    }
+  };
 
-    if (!product) return <div className="details-loading">Ładowanie...</div>;
+  const addReview = async () => {
+    if (!currentUser || !newReview.trim()) return;
 
-    return (
-        <div className="details-container">
-            <button onClick={onBack} className="back-btn">← Wróć do listy</button>
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          username: currentUser,
+          product_id: productId,
+          content: newReview,
+        }),
+      });
 
-            <div className="details-card">
-                <img src={product.image || ''} alt={product.title} className="details-image" />
-                
-                <div className="details-info-section">
-                    <h1 className="details-title">{product.title}</h1>
-                    <div >
-                        <span style={{fontSize:'22px'}}>Kategoria: </span>
-                        <span className="details-category">{product.category}</span>
-                    </div>
-                    
-                    <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
-                        <span style ={{fontSize:'22px'}}>Cena: </span>
-                        <h2 className="details-price">{product.price} $</h2>
-                    </div>
-                    
-                    
-                    <p className="details-stock">
-                        Stan magazynowy: {product.stock} szt.
-                    </p>
-                    
-                    <p className="details-description">{product.description}</p>
+      if (res.ok) {
+        setNewReview("");
+        const revRes = await fetch(`/api/reviews/${productId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setReviews(await revRes.json());
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-                    <div className="details-actions">
-                        <div className="quantity-control">
-                            <label>Ilość:</label>
-                            <input 
-                                type="number" 
-                                min="1" 
-                                max={product.stock} 
-                                value={quantity}
-                                onChange={(e) => setQuantity(Number(e.target.value))}
-                            />
-                        </div>
-                        <button 
-                            className="add-cart-btn" 
-                            onClick={addToCart}
-                            disabled={product.stock === 0 || !currentUser}
-                        >
-                            {product.stock === 0 ? 'Wyprzedane' : !currentUser ? 'Zaloguj się by kontynuować' : 'Dodaj do koszyka'}
-                        </button>
-                    </div>
-                    {message && <p className="action-message">{message}</p>}
-                </div>
+  if (!product) return <div className="details-loading">Ładowanie...</div>;
+
+  return (
+    <div className="details-container">
+      <button onClick={onBack} className="back-btn">
+        ← Back to list
+      </button>
+
+      <div className="details-card">
+        <img
+          src={product.image || ""}
+          alt={product.title}
+          className="details-image"
+        />
+
+        <div className="details-info-section">
+          <h1 className="details-title">{product.title}</h1>
+          <div>
+            <span style={{ fontSize: "1.2rem" }}>Category: </span>
+            <span className="details-category">{product.category}</span>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ fontSize: "1.2rem" }}>Price: </span>
+            <h2 className="details-price">{product.price} $</h2>
+          </div>
+
+          <p className="details-stock">Stock: {product.stock} pcs</p>
+
+          <p className="details-description">{product.description}</p>
+
+          <div className="details-actions">
+            <div className="quantity-control">
+              <label>Quantity:</label>
+              <input
+                type="number"
+                min="1"
+                max={product.stock}
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+              />
             </div>
-
-            <div className="reviews-section">
-                <h3>Opinie użytkowników</h3>
-                
-                <div className="add-review-box">
-                    <textarea 
-                        placeholder="Napisz swoją opinię..." 
-                        value={newReview}
-                        onChange={(e) => setNewReview(e.target.value)}
-                    />
-                    <button id="add-opinion-btn" onClick={addReview} disabled = {!currentUser}> {currentUser ? 'Dodaj opinię' : 'Zaloguj się by kontynuować'}</button>
-                </div>
-
-                <div className="reviews-list">
-                    {reviews.length === 0 && <p>Brak opinii</p>}
-                    {reviews.map(rev => (
-                        <div key={rev.id} className="review-item">
-                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <div>
-                                    <strong>{rev.username}</strong> 
-                                    <p style={{fontSize:'11px'}}>{new Date(rev.created_at).toLocaleDateString()}</p>
-                                </div>
-                                {(isAdmin || currentUser === rev.username) && (
-                                    <button 
-                                        onClick={() => handleDeleteReview(rev.id)}
-                                        style={{
-                                            background: '#d32f2f', 
-                                            color: 'white', 
-                                            border: 'none', 
-                                            cursor: 'pointer',
-                                            fontSize: '14px',
-                                            borderRadius: '4px',
-                                            flexBasis: '20%',
-                                        }}
-                                    >
-                                        Usuń
-                                    </button>
-                                )}
-                            </div>
-                            <p className="opinion">{rev.content}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <button
+              className="add-cart-btn"
+              onClick={addToCart}
+              disabled={product.stock === 0 || !currentUser}
+            >
+              {product.stock === 0
+                ? "Wyprzedane"
+                : !currentUser
+                  ? "Log in to continue"
+                  : "Add to cart"}
+            </button>
+          </div>
+          {message && <p className="action-message">{message}</p>}
         </div>
-    );
+      </div>
+
+      <div className="reviews-section">
+        <h3>User reviews</h3>
+
+        <div className="add-review-box">
+          <textarea
+            placeholder="Add your review..."
+            value={newReview}
+            onChange={(e) => setNewReview(e.target.value)}
+          />
+          <button
+            id="add-opinion-btn"
+            onClick={addReview}
+            disabled={!currentUser}
+          >
+            {" "}
+            {currentUser ? "Add a review" : "Log in to continue"}
+          </button>
+        </div>
+
+        <div className="reviews-list">
+          {reviews.length === 0 && <p>No reviews</p>}
+          {reviews.map((rev) => (
+            <div key={rev.id} className="review-item">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <strong>{rev.username}</strong>
+                  <p style={{ fontSize: "1rem" }}>
+                    {new Date(rev.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                {(isAdmin || currentUser === rev.username) && (
+                  <button
+                    onClick={() => handleDeleteReview(rev.id)}
+                    style={{
+                      background: "#d32f2f",
+                      color: "white",
+                      border: "none",
+                      cursor: "pointer",
+                      fontSize: "1rem",
+                      borderRadius: "4px",
+                      marginRight: "1rem",
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+              <p className="opinion">{rev.content}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ProductDetails;

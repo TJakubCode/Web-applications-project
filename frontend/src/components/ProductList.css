@@ -1,18 +1,61 @@
 #list-container {
-    max-width: 70vw;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: 'Segoe UI', sans-serif;
-    text-align: left;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+  text-align: left;
 }
 
 #products {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
 
 #loading {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 1.2rem;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.2rem;
+}
+
+#searchbar {
+  font-size: 20px;
+  font-style: italic;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+#search-input {
+  width: 400px;
+  margin-left: 20px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+@media (max-width: 900px) {
+  #searchbar {
+    font-size: 13px;
+  }
+
+  #search-input {
+    width: 200px;
+    padding: 8px;
+  }
+
+  #products {
+    width: 100%;
+  }
+
+  #list-container {
+    width: 100vw;
+    padding: 5px;
+  }
 }

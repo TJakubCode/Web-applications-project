@@ -47,35 +47,42 @@ const OrderHistory = ({ currentUser }: OrderHistoryProps) => {
   return (
     <div
       style={{
-        width: "80vw",
+        width: "98vw",
         margin: "20px auto",
-        color: "white",
-        fontSize: "24px",
+        color: "black",
+        fontSize: "1rem",
       }}
     >
-      <h2>Historia zamówień</h2>
+      <h2 style={{ marginBottom: "40px" }}>Purchase history</h2>
 
-      {orders.length === 0 && <p>Brak zamówień</p>}
+      {orders.length === 0 && <p style={{ marginLeft: "20px" }}>No orders</p>}
 
-      <div style={{ display: "flex", gap: "20px", textAlign: "left" }}>
+      <div style={{ display: "flex", gap: "10px", textAlign: "left" }}>
         <div style={{ flex: 1 }}>
           {orders.map((order, key) => (
             <div
               key={order.id}
               style={{
-                border: "1px solid #444",
-                padding: "15px",
-                background: selectedOrderId === order.id ? "#333" : "#1a1a1a",
+                backgroundColor: "white",
+                border:
+                  (selectedOrderId === order.id ? "2px" : "1px") +
+                  " solid " +
+                  (selectedOrderId === order.id ? "#a9a9a9" : "#e8e8e8"),
+                borderRadius: "10px",
+                padding: "5px",
                 cursor: "pointer",
+                marginLeft: selectedOrderId === order.id ? "0px" : "20px",
+                marginRight: selectedOrderId === order.id ? "20px" : "0px",
+                fontSize: "0.9rem",
               }}
               onClick={() => showDetails(order.id)}
             >
               <p>
-                <strong>Zamówienie #{orders.length - key}</strong>
+                <strong>Order #{orders.length - key}</strong>
               </p>
-              <p>Data: {new Date(order.created_at).toLocaleString()}</p>
+              <p>Date: {new Date(order.created_at).toLocaleString()}</p>
               <p style={{ color: "#4caf50" }}>
-                Suma: {order.total.toFixed(2)} $
+                Total: {order.total.toFixed(2)} $
               </p>
             </div>
           ))}
@@ -83,9 +90,16 @@ const OrderHistory = ({ currentUser }: OrderHistoryProps) => {
 
         {selectedOrderItems && (
           <div
-            style={{ flex: 1, border: "1px solid #444", paddingLeft: "20px" }}
+            style={{
+              flex: 1,
+              border: "2px solid #a9a9a9",
+              paddingLeft: "1rem",
+              borderRadius: "10px",
+              backgroundColor: "white",
+              fontSize: "0.9rem",
+            }}
           >
-            <h3>Szczegóły zamówienia #{selectedOrderId}</h3>
+            <h3>Order details #{selectedOrderId}</h3>
             {selectedOrderItems.map((item, idx) => (
               <div
                 key={idx}
@@ -93,22 +107,23 @@ const OrderHistory = ({ currentUser }: OrderHistoryProps) => {
                   display: "flex",
                   gap: "10px",
                   alignItems: "center",
-                  borderStyle: "solid",
-                  borderColor: "gray",
-                  borderWidth: "2px 0px 2px 0px",
+                  marginBottom: "2rem",
+                  borderBottom: "2px solid #a9a9a9",
                 }}
               >
                 <img
                   src={item.image}
                   style={{
-                    width: "100px",
-                    height: "100px",
+                    width: "20%",
+                    maxWidth: "200px",
+                    maxHeight: "200px",
+                    flexShrink: "0",
                     objectFit: "contain",
                   }}
                 />
                 <div>
-                  <p style={{ margin: 0, fontSize: "24px" }}>{item.title}</p>
-                  <p style={{ margin: 0, color: "#aaa", fontSize: "20px" }}>
+                  <p style={{ margin: 0, fontSize: "0.8rem" }}>{item.title}</p>
+                  <p style={{ margin: 0, fontSize: "0.8rem" }}>
                     {item.quantity} x {item.price.toFixed(2)} $
                   </p>
                 </div>
