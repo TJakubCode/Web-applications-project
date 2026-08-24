@@ -1,6 +1,7 @@
 # React web app built with TypeScript
 
-Website made as part of an AGH University course. Features placing orders, adding reviews, browsing order history and more. The backend uses an SQLite database due to its simplicity, while the frontend is built in React. The styling is done with pure CSS and the website itself remains responsive on different screen sizes.
+Website made as part of an AGH University course. Features placing orders, adding reviews, browsing order history and more. The backend uses SQLite database due to its simplicity, while the frontend is built in React. The styling is done with pure CSS and the website itself remains responsive on different screen sizes.
+
 <p align="center">
   <img width="650" alt="website-demonstration" src="https://github.com/user-attachments/assets/ca3b3f1d-b05b-4db3-93f5-68292d1859af" />
 </p>
@@ -18,7 +19,7 @@ Website made as part of an AGH University course. Features placing orders, addin
 
 ## Setup
 
-### Server:
+### Start the Server
 
 #### Create .env
 
@@ -26,13 +27,15 @@ Website made as part of an AGH University course. Features placing orders, addin
 JWT_SECRET=[YOUR KEY] JWT_EXPIRES_IN=1h
 ```
 
-#### Run the server:
+#### Run the server
 
 ```shell
 cd backend
 npm install
 npx tsx server.ts
 ```
+
+### Frontend
 
 #### Start the app
 
